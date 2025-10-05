@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3000; //running on port 3000
 
 //enable cors
 app.use(cors({
-    origin: '*', //allow all origins
+    origin: 'https://icy-ocean-042763510.1.azurestaticapps.net'
 }));
 
 //route to roll specific amount of dice
