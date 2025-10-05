@@ -8,6 +8,10 @@ app.use(cors({
     origin: 'https://icy-ocean-042763510.1.azurestaticapps.net'
 }));
 
+app.get('/', (req, res) => {
+    res.send('Dice API is running. Use /roll/:num to roll dice.');
+});
+
 //route to roll specific amount of dice
 app.get('/roll/:num', (req, res) => {
     const numDice = parseInt(req.params.num);
