@@ -1,4 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# Docs for Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: Build and deploy Node.js app to Azure Web App - web-dice-api
@@ -13,41 +13,50 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
+      # Step 1: Checkout repo
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js version
+      # Step 2: Set up Node.js
+      - name: Set up Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
-      
-      - name: Upload artifact for deployment job
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run tests (optional)
+      - name: Run tests
+        run: npm test --if-present
+
+      # Step 5: Upload only necessary files as artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: |
+            server.js
+            package.json
+            package-lock.json
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+      # Step 1: Download artifact from build
+      - uses: actions/download-artifact@v4
         with:
           name: node-app
-      
+
+      # Step 2: Login to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -55,11 +64,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FB66CAE944CC49DBBE3F098D8062254D }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1D10B4D4D0334EA0AD573A7AFEC1CC48 }}
 
-      - name: 'Deploy to Azure Web App'
+      # Step 3: Deploy to Azure Web App
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
-          app-name: 'web-dice-api'
+          app-name: 'web-dice-api'       # EXACT name of your Windows App Service
           slot-name: 'Production'
           package: .
-          
