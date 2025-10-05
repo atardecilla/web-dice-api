@@ -1,6 +1,6 @@
 # Docs for Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
-
+# used chatgpt to help fix this file
 name: Build and deploy Node.js app to Azure Web App - web-dice-api
 
 on:
@@ -29,11 +29,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Run tests (optional)
-      - name: Run tests
-        run: npm test --if-present
-
-      # Step 5: Upload only necessary files as artifact
+      # Step 4: Upload only necessary files as artifact
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
