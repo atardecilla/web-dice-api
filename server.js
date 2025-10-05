@@ -4,9 +4,7 @@ const app = express(); // Express app instance
 const PORT = process.env.PORT || 3000; //running on port 3000
 
 //enable cors
-app.use(cors({
-    origin: 'https://icy-ocean-042763510.1.azurestaticapps.net'
-}));
+app.use(cors()); //enable all origins for testing
 
 app.get('/', (req, res) => {
     res.send('Dice API is running. Use /roll/:num to roll dice.');
